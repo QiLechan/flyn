@@ -1,5 +1,6 @@
 package org.yuezhikong.flyn
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,10 +32,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentComposer
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.selects.select
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +57,10 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Main() {
+    val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -98,40 +107,49 @@ fun Main() {
             bottomBar = {
                 NavigationBar {
                     NavigationBarItem(
-                        selected = true,
-                        onClick = { /* 首页 */ },
+                        selected = currentRoute == "home",
+                        onClick = { navController.navigate("home") },
                         icon = { Icon(Icons.Filled.Home, contentDescription = "首页") },
                         label = { Text("首页") }
                     )
                     NavigationBarItem(
-                        selected = false,
+                        selected = currentRoute == "legal",
                         onClick = { /* 法条科普 */ },
                         icon = { Icon(Icons.Filled.FileCopy, contentDescription = "法条科普") },
                         label = { Text("法条科普") }
                     )
                     NavigationBarItem(
-                        selected = false,
-                        onClick = { /* 麦克风 */ },
+                        selected = currentRoute == "consultation",
+                        onClick = { /* 咨询通道 */ },
                         icon = { Icon(Icons.Filled.ShoppingBag, contentDescription = "咨询通道") },
                         label = { Text("咨询通道") }
                     )
                     NavigationBarItem(
-                        selected = false,
-                        onClick = { /* 我的 */ },
+                        selected = currentRoute == "user",
+                        onClick = { navController.navigate("user") },
                         icon = { Icon(Icons.Filled.Person, contentDescription = "我的") },
                         label = { Text("我的") }
                     )
                 }
             }
         ) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = androidx.compose.ui.Alignment.Center
+            NavHost(
+                navController = navController, startDestination = "home" ,
+                modifier = Modifier.padding(innerPadding)
             ) {
-                // Text("主界面内容", style = MaterialTheme.typography.headlineMedium)
+                composable("home") { HomeScreen() }
+                composable("user") { UserScreen() }
             }
         }
     }
+}
+
+@Composable
+fun HomeScreen() {
+    Text("欢迎使用法粒援农！", style = MaterialTheme.typography.headlineMedium)
+}
+
+@Composable
+fun UserScreen() {
+    Text("用户界面", style = MaterialTheme.typography.headlineMedium)
 }

@@ -14,6 +14,9 @@ composeBom = "2024.09.00"
 material = "1.13.0"
 materialVersion = "1.12.0"
 constraintlayout = "2.2.1"
+appcompat = "1.6.1"
+activity = "1.8.0"
+navigationCompose = "2.9.5"
 
 [libraries]
 androidx-compose-bom-v20251001 = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
@@ -37,6 +40,9 @@ material = { group = "com.google.android.material", name = "material", version.r
 material-v1120 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
 material-v140 = { module = "com.google.android.material:material", version.ref = "googleMaterial" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
