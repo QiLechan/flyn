@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Main() {
@@ -115,7 +116,15 @@ fun Main() {
                 NavigationBar {
                     NavigationBarItem(
                         selected = currentRoute == "home",
-                        onClick = { navController.navigate("home") },
+                        onClick = {
+                            navController.navigate("home") {
+                                popUpTo(navController.graph.startDestinationId) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                                  },
                         icon = { Icon(Icons.Filled.Home, contentDescription = "首页") },
                         label = { Text("首页") }
                     )
@@ -133,7 +142,14 @@ fun Main() {
                     )
                     NavigationBarItem(
                         selected = currentRoute == "user",
-                        onClick = { navController.navigate("user") },
+                        onClick = { navController.navigate("user") {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                                  },
                         icon = { Icon(Icons.Filled.Person, contentDescription = "我的") },
                         label = { Text("我的") }
                     )
@@ -175,7 +191,6 @@ fun UserScreen() {
                 modifier = Modifier
                     .align(Alignment.CenterStart),
                 verticalAlignment = Alignment.CenterVertically,
-                //horizontalArrangement = Arrangement.Start
             ) {
                 Box(
                     modifier = Modifier
