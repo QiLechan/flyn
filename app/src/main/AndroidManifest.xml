@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Flyn">
         <activity
+            android:name=".SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserActivity"
             android:exported="false" />
         <activity
