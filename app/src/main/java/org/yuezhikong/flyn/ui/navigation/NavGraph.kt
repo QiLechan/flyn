@@ -10,6 +10,7 @@ import org.yuezhikong.flyn.ui.home.HomeScreen
 import org.yuezhikong.flyn.ui.home.LegalScreen
 import org.yuezhikong.flyn.ui.home.UserScreen
 import org.yuezhikong.flyn.ui.home.SettingScreen
+import org.yuezhikong.flyn.ui.user.LoginScreen
 
 @Composable
 fun SetupNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -24,5 +25,6 @@ fun SetupNavGraph(navController: NavHostController, modifier: Modifier = Modifie
         composable("consultation") { ConsultationScreen() }
         composable("user") { UserScreen(navController) }
         composable("setting") { SettingScreen() }
+        composable("login") { LoginScreen() }
     }
 }

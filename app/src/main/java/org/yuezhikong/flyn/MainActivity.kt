@@ -60,9 +60,12 @@ fun Main() {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
     var showTopBar by remember { mutableStateOf(true) }
+    var showNavBar by remember { mutableStateOf(true) }
 
     LaunchedEffect(currentRoute) {
         showTopBar = currentRoute != "user"
+        showTopBar = currentRoute != "setting"
+        showNavBar = currentRoute != "setting"
     }
 
     ModalNavigationDrawer(
@@ -110,46 +113,54 @@ fun Main() {
                 }
             },
             bottomBar = {
-                NavigationBar {
-                    NavigationBarItem(
-                        selected = currentRoute == "home",
-                        onClick = {
-                            navController.navigate("home") {
-                                popUpTo(navController.graph.startDestinationId) {
-                                    saveState = true
+                if (showNavBar) {
+                    NavigationBar {
+                        NavigationBarItem(
+                            selected = currentRoute == "home",
+                            onClick = {
+                                navController.navigate("home") {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                                  },
-                        icon = { Icon(Icons.Filled.Home, contentDescription = "首页") },
-                        label = { Text("首页") }
-                    )
-                    NavigationBarItem(
-                        selected = currentRoute == "legal",
-                        onClick = { /* 法条科普 */ },
-                        icon = { Icon(Icons.Filled.FileCopy, contentDescription = "法条科普") },
-                        label = { Text("法条科普") }
-                    )
-                    NavigationBarItem(
-                        selected = currentRoute == "consultation",
-                        onClick = { /* 咨询通道 */ },
-                        icon = { Icon(Icons.Filled.ShoppingBag, contentDescription = "咨询通道") },
-                        label = { Text("咨询通道") }
-                    )
-                    NavigationBarItem(
-                        selected = currentRoute == "user",
-                        onClick = { navController.navigate("user") {
-                            popUpTo(navController.graph.startDestinationId) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                                  },
-                        icon = { Icon(Icons.Filled.Person, contentDescription = "我的") },
-                        label = { Text("我的") }
-                    )
+                            },
+                            icon = { Icon(Icons.Filled.Home, contentDescription = "首页") },
+                            label = { Text("首页") }
+                        )
+                        NavigationBarItem(
+                            selected = currentRoute == "legal",
+                            onClick = { /* 法条科普 */ },
+                            icon = { Icon(Icons.Filled.FileCopy, contentDescription = "法条科普") },
+                            label = { Text("法条科普") }
+                        )
+                        NavigationBarItem(
+                            selected = currentRoute == "consultation",
+                            onClick = { /* 咨询通道 */ },
+                            icon = {
+                                Icon(
+                                    Icons.Filled.ShoppingBag,
+                                    contentDescription = "咨询通道"
+                                )
+                            },
+                            label = { Text("咨询通道") }
+                        )
+                        NavigationBarItem(
+                            selected = currentRoute == "user",
+                            onClick = {
+                                navController.navigate("user") {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            icon = { Icon(Icons.Filled.Person, contentDescription = "我的") },
+                            label = { Text("我的") }
+                        )
+                    }
                 }
             }
         ) { innerPadding ->

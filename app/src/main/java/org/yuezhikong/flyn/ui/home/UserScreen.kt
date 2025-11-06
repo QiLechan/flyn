@@ -1,6 +1,7 @@
 package org.yuezhikong.flyn.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,17 +42,23 @@ fun UserScreen(navController: NavController) {
         ){
             Row(
                 modifier = Modifier
-                    .align(Alignment.CenterStart),
+                    .align(Alignment.CenterStart)
+                    .clickable {
+                        navController.navigate("login") {
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
                     modifier = Modifier
                         .size(64.dp)
                         .clip(CircleShape)
-                        .background(Color.Yellow)
+                        .background(Color.Yellow),
                 )
                 Spacer(modifier = Modifier.width(12.dp))
-                Text("用户昵称", style = MaterialTheme.typography.headlineSmall)
+                Text("未登录", style = MaterialTheme.typography.headlineSmall,)
             }
             Row(
                 modifier = Modifier
@@ -60,7 +67,10 @@ fun UserScreen(navController: NavController) {
             ) {
                 IconButton(
                     onClick = {
-                        navController.navigate("setting")
+                        navController.navigate("setting") {
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 ) {
                     Icon(
