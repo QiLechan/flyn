@@ -6,7 +6,6 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
 object SecurePrefs {
-
     private lateinit var prefs: SharedPreferences
 
     fun init(context: Context) {
