@@ -7,12 +7,16 @@ class User {
     private var access_token: String = ""
     private var refresh_token: String = ""
 
-    fun userLogin(number: String, password: String): JSONObject? {
-        val request = buildRequest(number, password)
+    fun userLogin(username: String, password: String): Boolean {
+        val json = JSONObject()
+        json.put("username", username)
+        json.put("password", password)
+        val url = ""
+        val request = buildRequest(url, json.toString())
         executeRequest(createHttpClient(), request)?.let {
-            return it
+            return parseLoginResponse(it)
         }
-        return null
+        return false
     }
 
     fun parseLoginResponse(response: JSONObject): Boolean {

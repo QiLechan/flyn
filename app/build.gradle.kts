@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.okhttp)
     implementation(libs.androidx.security.crypto)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -12,7 +12,7 @@ fun createHttpClient(): OkHttpClient {
 }
 
 fun buildRequest(url: String, jsonBody: String): Request {
-    val mediaType = "application/json;".toMediaTypeOrNull()
+    val mediaType = "application/json".toMediaTypeOrNull()
     val body = jsonBody.toRequestBody(mediaType)
     return Request.Builder()
         .url(url)
