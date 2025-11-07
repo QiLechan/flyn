@@ -65,13 +65,12 @@ fun Main() {
     val scope = rememberCoroutineScope()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
-    var showTopBar by remember { mutableStateOf(true) }
-    var showNavBar by remember { mutableStateOf(true) }
+    var showTopBar by remember { mutableStateOf(false) }
+    var showNavBar by remember { mutableStateOf(false) }
 
     LaunchedEffect(currentRoute) {
-        showTopBar = currentRoute != "user"
-        showTopBar = currentRoute != "setting"
-        showNavBar = currentRoute != "setting"
+        showTopBar = currentRoute in listOf("home", "user")
+        showNavBar = currentRoute in listOf("home", "user")
     }
 
     ModalNavigationDrawer(

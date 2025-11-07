@@ -81,7 +81,6 @@ class LoginViewModel : ViewModel() {
     }
 }
 
-//@Preview
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewModel()) {
     val context = LocalContext.current
@@ -108,7 +107,6 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
             .padding(16.dp)
     ) {
         Text("用户登录", style = MaterialTheme.typography.headlineMedium)
-        Text("手机号", style = MaterialTheme.typography.bodyLarge)
         OutlinedTextField(
             value = number,
             onValueChange = { number = it },
@@ -116,7 +114,6 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             singleLine = true
         )
-        Text("密码", style = MaterialTheme.typography.bodyLarge)
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -130,6 +127,17 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
             modifier = Modifier.padding(top = 16.dp)
         ) {
             Text("登录")
+        }
+        Button(
+            onClick = {
+                navController.navigate("signin"){
+                    launchSingleTop = true
+                    restoreState = true
+                }
+                      },
+            modifier = Modifier.padding(top = 16.dp)
+        ) {
+            Text("注册")
         }
         // 登录中弹窗
         if (viewModel.isLoading) {
