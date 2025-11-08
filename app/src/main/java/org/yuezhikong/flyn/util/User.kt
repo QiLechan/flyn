@@ -7,11 +7,20 @@ class User {
     private var access_token: String = ""
     private var refresh_token: String = ""
 
+    private var userid: String = ""
+    private var username: String = ""
+    private var email: String = ""
+    private var number: String = ""
+
+    fun isLoggedIn(): Boolean {
+        return setRefreshToken()
+    }
+
     fun userLogin(username: String, password: String): Boolean {
         val json = JSONObject()
         json.put("username", username)
         json.put("password", password)
-        val url = ""
+        val url = "https://app-8go3d13e29358a5e.api.tcloudbasegateway.com/auth/v1/signin"
         val request = buildRequest(url, json.toString())
         executeRequest(createHttpClient(), request)?.let {
             return parseLoginResponse(it)
@@ -30,14 +39,19 @@ class User {
         return true
     }
 
-    fun saveRefreshToken(): Unit {
+    fun saveRefreshToken(): Boolean {
         SecurePrefs.getPrefs().edit {
             putString("refresh_token", refresh_token)
         }
+        return true
     }
 
     fun setRefreshToken(): Boolean {
         refresh_token = SecurePrefs.getPrefs().getString("refresh_token", null) ?: return false
         return true
     }
+
+//    fun getRefreshToken(): String? {
+//        return SecurePrefs.getPrefs().getString("refresh_token", null)
+//    }
 }

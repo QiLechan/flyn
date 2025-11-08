@@ -26,10 +26,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import org.yuezhikong.flyn.user
 
 @Composable
 fun UserScreen(navController: NavController) {
     val context = LocalContext.current
+    val isLoggedIn = user.isLoggedIn()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,9 +46,16 @@ fun UserScreen(navController: NavController) {
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .clickable {
-                        navController.navigate("login") {
-                            launchSingleTop = true
-                            restoreState = true
+                        if ( !isLoggedIn ) {
+                            navController.navigate("login") {
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        } else {
+                            navController.navigate("profile") {
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
                     },
                 verticalAlignment = Alignment.CenterVertically,
@@ -58,7 +67,10 @@ fun UserScreen(navController: NavController) {
                         .background(Color.Yellow),
                 )
                 Spacer(modifier = Modifier.width(12.dp))
-                Text("未登录", style = MaterialTheme.typography.headlineSmall,)
+                if ( !isLoggedIn )
+                    Text("未登录", style = MaterialTheme.typography.headlineSmall)
+                else
+                    Text("已登录", style = MaterialTheme.typography.headlineSmall)
             }
             Row(
                 modifier = Modifier

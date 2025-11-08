@@ -34,7 +34,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.yuezhikong.flyn.util.User
+import org.yuezhikong.flyn.user
 
 class LoginViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
@@ -50,10 +50,12 @@ class LoginViewModel : ViewModel() {
         viewModelScope.launch {
             isLoading = true
             errorMessage = null
+            var result: Boolean = false
 
-            val result = withContext(Dispatchers.IO) {
-                val user = User()
-                user.userLogin(username, password)
+            withContext(Dispatchers.IO) {
+                if (user.userLogin(username, password)) {
+                    result = user.saveRefreshToken()
+                }
             }
 
             isLoading = false

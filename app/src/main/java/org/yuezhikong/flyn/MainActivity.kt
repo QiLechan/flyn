@@ -42,6 +42,9 @@ import kotlinx.coroutines.launch
 import org.yuezhikong.flyn.ui.navigation.SetupNavGraph
 import org.yuezhikong.flyn.ui.theme.FlynTheme
 import org.yuezhikong.flyn.util.SecurePrefs
+import org.yuezhikong.flyn.util.User
+
+val user = User()
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
