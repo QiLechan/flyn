@@ -89,19 +89,23 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
     var number by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    LaunchedEffect(viewModel.loginSuccess, viewModel.errorMessage) {
-        when {
-            viewModel.loginSuccess -> {
-                Toast.makeText(context, "登录成功！", Toast.LENGTH_SHORT).show()
-                viewModel.resetStates()
-                navController.popBackStack()
-            }
-            viewModel.errorMessage != null -> {
-                Toast.makeText(context, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
-                viewModel.resetStates()
-            }
+
+LaunchedEffect(viewModel.loginSuccess, viewModel.errorMessage) {
+    // 监听 loginSuccess 与 errorMessage 的变化
+    when {
+        viewModel.loginSuccess -> {
+            // 登录成功：提示用户、重置 ViewModel 状态并返回上一个界面
+            Toast.makeText(context, "登录成功！", Toast.LENGTH_SHORT).show()
+            viewModel.resetStates()
+            navController.popBackStack()
+        }
+        viewModel.errorMessage != null -> {
+            // 登录失败或出现错误：显示错误信息并重置 ViewModel 状态
+            Toast.makeText(context, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+            viewModel.resetStates()
         }
     }
+}
 
     Column(
         modifier = Modifier

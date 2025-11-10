@@ -180,7 +180,3 @@ fun Main() {
     }
 }
 
-fun setmasterKey() {
-
-}
-

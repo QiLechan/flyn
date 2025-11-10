@@ -21,9 +21,10 @@ import androidx.compose.ui.unit.dp
 
 @Preview
 @Composable
-fun SigninScreen() {
-    var number by remember { mutableStateOf("") }
+fun SignupScreen() {
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var verification_code by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,11 +32,19 @@ fun SigninScreen() {
     ) {
         Text("用户注册", style = MaterialTheme.typography.headlineMedium)
         OutlinedTextField(
-            value = number,
+            value = email,
             onValueChange = {},
-            label = { Text("手机号") },
+            label = { Text("邮箱") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             singleLine = true
+        )
+        Button(
+            onClick = {
+
+            },
+            content = {
+                Text("获取验证码")
+            }
         )
         OutlinedTextField(
             value = password,
@@ -43,6 +52,13 @@ fun SigninScreen() {
             label = { Text("密码") },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            singleLine = true
+        )
+        OutlinedTextField(
+            value = verification_code,
+            onValueChange = {},
+            label = { Text("验证码") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             singleLine = true
         )
         Button(
