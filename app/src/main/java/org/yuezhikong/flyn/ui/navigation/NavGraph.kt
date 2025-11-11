@@ -1,7 +1,12 @@
 package org.yuezhikong.flyn.ui.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,6 +18,30 @@ import org.yuezhikong.flyn.ui.home.SettingScreen
 import org.yuezhikong.flyn.ui.user.LoginScreen
 import org.yuezhikong.flyn.ui.user.ProfileScreen
 import org.yuezhikong.flyn.ui.user.SignupScreen
+
+private fun AnimatedContentTransitionScope<NavBackStackEntry>.defaultEnterTransition() =
+    slideIntoContainer(
+        AnimatedContentTransitionScope.SlideDirection.Left,
+        tween(300)) + fadeIn(tween(300)
+        )
+
+private fun AnimatedContentTransitionScope<NavBackStackEntry>.defaultExitTransition() =
+    slideOutOfContainer(
+        AnimatedContentTransitionScope.SlideDirection.Left,
+        tween(300)) + fadeOut(tween(300)
+        )
+
+private fun AnimatedContentTransitionScope<NavBackStackEntry>.defaultPopEnterTransition() =
+    slideIntoContainer(
+        AnimatedContentTransitionScope.SlideDirection.Right,
+        tween(300)) + fadeIn(tween(300)
+        )
+
+private fun AnimatedContentTransitionScope<NavBackStackEntry>.defaultPopExitTransition() =
+    slideOutOfContainer(
+        AnimatedContentTransitionScope.SlideDirection.Right,
+        tween(300)) + fadeOut(tween(300)
+        )
 
 @Composable
 fun SetupNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -26,9 +55,30 @@ fun SetupNavGraph(navController: NavHostController, modifier: Modifier = Modifie
         composable("legal") { LegalScreen() }
         composable("consultation") { ConsultationScreen() }
         composable("user") { UserScreen(navController) }
-        composable("setting") { SettingScreen() }
-        composable("login") { LoginScreen(navController) }
-        composable("signin") { SignupScreen(navController) }
-        composable("profile") { ProfileScreen() }
+        composable(
+            "setting" ,
+            enterTransition = { defaultEnterTransition() },
+            exitTransition = { defaultExitTransition() },
+            popEnterTransition = { defaultPopEnterTransition() },
+            popExitTransition = { defaultPopExitTransition() },
+        ) { SettingScreen() }
+        composable("login",
+            enterTransition = { defaultEnterTransition() },
+            exitTransition = { defaultExitTransition() },
+            popEnterTransition = { defaultPopEnterTransition() },
+            popExitTransition = { defaultPopExitTransition() },
+        ) { LoginScreen(navController) }
+        composable("signin",
+            enterTransition = { defaultEnterTransition() },
+            exitTransition = { defaultExitTransition() },
+            popEnterTransition = { defaultPopEnterTransition() },
+            popExitTransition = { defaultPopExitTransition() },
+            ) { SignupScreen(navController) }
+        composable("profile",
+            enterTransition = { defaultEnterTransition() },
+            exitTransition = { defaultExitTransition() },
+            popEnterTransition = { defaultPopEnterTransition() },
+            popExitTransition = { defaultPopExitTransition() },
+        ) { ProfileScreen() }
     }
 }
