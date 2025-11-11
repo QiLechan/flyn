@@ -28,7 +28,7 @@ fun SetupNavGraph(navController: NavHostController, modifier: Modifier = Modifie
         composable("user") { UserScreen(navController) }
         composable("setting") { SettingScreen() }
         composable("login") { LoginScreen(navController) }
-        composable("signin") { SignupScreen() }
+        composable("signin") { SignupScreen(navController) }
         composable("profile") { ProfileScreen() }
     }
 }
