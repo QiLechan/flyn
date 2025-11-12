@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,13 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.Navigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -41,7 +40,7 @@ class SignupViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
 
-    var signuoSuccess by mutableStateOf(false)
+    var signupSuccess by mutableStateOf(false)
         private set
 
     var errorMessage by mutableStateOf<String?>(null)
@@ -57,31 +56,67 @@ class SignupViewModel : ViewModel() {
         }
     }
 
-    fun signup(email: String, password: String, verification_code: String) {
+    fun signup(username: String, email: String, password: String, verification_code: String) {
         viewModelScope.launch {
             isLoading = true
             errorMessage = null
             var result: Boolean = false
 
             withContext(Dispatchers.IO) {
+                result = user.userSignup(username, password, email, verification_code)
+            }
+            isLoading = false
 
+            if (result) {
+                signupSuccess = true
+            } else {
+                errorMessage = "注册失败，请检查信息是否正确"
             }
         }
+    }
+
+    fun resetStates() {
+        isLoading = false
+        signupSuccess = false
+        errorMessage = null
     }
 }
 
 @Composable
 fun SignupScreen(navController: NavController, viewModel: SignupViewModel = viewModel()) {
     val context = LocalContext.current
+    var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var verification_code by remember { mutableStateOf("") }
+
+    LaunchedEffect(viewModel.signupSuccess, viewModel.errorMessage) {
+        when {
+            viewModel.signupSuccess -> {
+                Toast.makeText(context, "注册成功！", Toast.LENGTH_SHORT).show()
+                viewModel.resetStates()
+                navController.popBackStack("user", false)
+            }
+            viewModel.errorMessage != null -> {
+                Toast.makeText(context, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+                viewModel.resetStates()
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
         Text("用户注册", style = MaterialTheme.typography.headlineMedium)
+        OutlinedTextField(
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("用户名") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            singleLine = true
+        )
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -120,7 +155,7 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = view
         )
         Button(
             onClick = {
-
+                viewModel.signup(username, email, password, verification_code)
             },
             content = {
                 Text("注册")

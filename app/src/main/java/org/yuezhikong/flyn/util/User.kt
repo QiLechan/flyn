@@ -12,6 +12,7 @@ class User {
     private var email: String = ""
     private var number: String = ""
     private var verification_id: String = ""
+    private var verification_token: String = ""
 
     fun isLoggedIn(): Boolean {
         return setRefreshToken()
@@ -44,11 +45,16 @@ class User {
         return true
     }
 
-    fun userSignup(username: String, password: String, email: String): Boolean {
+    fun userSignup(username: String, password: String, email: String, verification_code: String): Boolean {
+        if (!verifyEmail_Signup_Verification_code(verification_code)) {
+            return false
+        }
         val json = JSONObject()
         json.put("email", email)
         json.put("username", username)
         json.put("password", password)
+        json.put("verification_token", verification_token)
+        json
         val url = "https://app-8go3d13e29358a5e.api.tcloudbasegateway.com/auth/v1/signup"
         val request = buildRequest(url, json.toString())
         executeRequest(createHttpClient(), request)?.let {
@@ -64,7 +70,23 @@ class User {
         val url = "https://app-8go3d13e29358a5e.api.tcloudbasegateway.com/auth/v1/verification"
         val request = buildRequest(url, json.toString())
         executeRequest(createHttpClient(), request)?.let {
-             return parseEmail_Signup_Verification_codeResponse(it)
+            return parseEmail_Signup_Verification_codeResponse(it)
+        }
+        return false
+    }
+
+    fun verifyEmail_Signup_Verification_code(verification_code: String): Boolean{
+        if (verification_id == "") {
+            return false
+        }
+        val json = JSONObject()
+        json.put("verification_id", verification_id)
+        json.put("verification_code", verification_code)
+        val url = "https://app-8go3d13e29358a5e.api.tcloudbasegateway.com/auth/v1/verification/verify"
+        val request = buildRequest(url, json.toString())
+        executeRequest(createHttpClient(), request)?.let {
+            verification_token = it.optString("verification_token", null)
+            return true
         }
         return false
     }

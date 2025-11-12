@@ -72,7 +72,7 @@ fun Main() {
     var showNavBar by remember { mutableStateOf(false) }
 
     LaunchedEffect(currentRoute) {
-        showTopBar = currentRoute in listOf("home", "user")
+        showTopBar = currentRoute in listOf("home")
         showNavBar = currentRoute in listOf("home", "user")
     }
 
