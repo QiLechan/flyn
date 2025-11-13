@@ -94,6 +94,7 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = view
         when {
             viewModel.signupSuccess -> {
                 Toast.makeText(context, "注册成功！", Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.IO) { user.getUserInfo() }
                 viewModel.resetStates()
                 navController.popBackStack("user", false)
             }

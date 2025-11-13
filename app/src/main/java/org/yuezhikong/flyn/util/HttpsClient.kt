@@ -6,19 +6,33 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
+enum class RequestMethod {
+    POST, GET
+}
+
 fun createHttpClient(): OkHttpClient {
     return OkHttpClient.Builder()
         .build()
 }
 
-fun buildRequest(url: String, jsonBody: String): Request {
+fun buildRequest(url: String, jsonBody: String = "", method: RequestMethod): Request {
     val mediaType = "application/json".toMediaTypeOrNull()
-    val body = jsonBody.toRequestBody(mediaType)
-    return Request.Builder()
-        .url(url)
-        .addHeader("Accept", "application/json")
-        .post(body)
-        .build()
+    when (method){
+        RequestMethod.POST -> {
+            val body = jsonBody.toRequestBody(mediaType)
+            return Request.Builder()
+                .url(url)
+                .addHeader("Accept", "application/json")
+                .post(body)
+                .build()
+        }
+        RequestMethod.GET ->
+            return Request.Builder()
+                .url(url)
+                .addHeader("Accept", "application/json")
+                .get()
+                .build()
+    }
 }
 
 fun executeRequest(client: OkHttpClient, request: Request): JSONObject? {

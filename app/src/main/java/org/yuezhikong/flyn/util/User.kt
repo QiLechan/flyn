@@ -29,7 +29,7 @@ class User {
         json.put("username", username)
         json.put("password", password)
         val url = "https://app-8go3d13e29358a5e.api.tcloudbasegateway.com/auth/v1/signin"
-        val request = buildRequest(url, json.toString())
+        val request = buildRequest(url, json.toString(), RequestMethod.POST)
         executeRequest(createHttpClient(), request)?.let {
             return parseLoginResponse(it)
         }
@@ -56,7 +56,7 @@ class User {
         json.put("verification_token", verification_token)
         json
         val url = "https://app-8go3d13e29358a5e.api.tcloudbasegateway.com/auth/v1/signup"
-        val request = buildRequest(url, json.toString())
+        val request = buildRequest(url, json.toString(), RequestMethod.POST)
         executeRequest(createHttpClient(), request)?.let {
             return parseSignupResponse(it)
         }
@@ -68,7 +68,7 @@ class User {
         json.put("email", email)
         json.put("target", "NOT_USER")
         val url = "https://app-8go3d13e29358a5e.api.tcloudbasegateway.com/auth/v1/verification"
-        val request = buildRequest(url, json.toString())
+        val request = buildRequest(url, json.toString(), RequestMethod.POST)
         executeRequest(createHttpClient(), request)?.let {
             return parseEmail_Signup_Verification_codeResponse(it)
         }
@@ -83,7 +83,7 @@ class User {
         json.put("verification_id", verification_id)
         json.put("verification_code", verification_code)
         val url = "https://app-8go3d13e29358a5e.api.tcloudbasegateway.com/auth/v1/verification/verify"
-        val request = buildRequest(url, json.toString())
+        val request = buildRequest(url, json.toString(), RequestMethod.POST)
         executeRequest(createHttpClient(), request)?.let {
             verification_token = it.optString("verification_token", null)
             return true
@@ -137,6 +137,25 @@ class User {
     fun setRefreshToken(): Boolean {
         refresh_token = SecurePrefs.getPrefs().getString("refresh_token", null) ?: return false
         return true
+    }
+
+    fun getUserInfo(): Boolean {
+        val url = "https://app-8go3d13e29358a5e.api.tcloudbasegateway.com/auth/v1/user/me"
+        val request = buildRequest(url, method = RequestMethod.GET).newBuilder().addHeader("Authorization", "Bearer $access_token").build()
+        executeRequest(createHttpClient(), request)?.let {
+            username = it.optString("username", null)
+            email = it.optString("email", null)
+            return true
+        }
+        return false
+    }
+
+    fun getUsername():String {
+        return username
+    }
+
+    fun getUseremail(): String {
+        return email
     }
 
 //    fun getRefreshToken(): String? {

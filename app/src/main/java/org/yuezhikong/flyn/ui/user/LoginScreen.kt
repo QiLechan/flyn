@@ -95,6 +95,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
             viewModel.loginSuccess -> {
                 // 登录成功：提示用户、重置 ViewModel 状态并返回上一个界面
                 Toast.makeText(context, "登录成功！", Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.IO) { user.getUserInfo() }
                 viewModel.resetStates()
                 navController.popBackStack()
             }
@@ -115,7 +116,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
         OutlinedTextField(
             value = number,
             onValueChange = { number = it },
-            label = { Text("手机号") },
+            label = { Text("用户名") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             singleLine = true
         )
