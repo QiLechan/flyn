@@ -35,11 +35,12 @@ fun UserScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(top = 20.dp)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.LightGray)
+                //.background(Color.LightGray)
                 .padding(32.dp)
         ){
             Row(

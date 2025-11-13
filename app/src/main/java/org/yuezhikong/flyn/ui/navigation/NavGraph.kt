@@ -1,6 +1,8 @@
 package org.yuezhikong.flyn.ui.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -51,10 +53,22 @@ fun SetupNavGraph(navController: NavHostController, modifier: Modifier = Modifie
         route = "navigation_graph",
         modifier = modifier
     ) {
-        composable("home") { HomeScreen() }
+        composable(
+            "home",
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { ExitTransition.None }
+            ) { HomeScreen() }
         composable("legal") { LegalScreen() }
         composable("consultation") { ConsultationScreen() }
-        composable("user") { UserScreen(navController) }
+        composable(
+            "user" ,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { ExitTransition.None }
+        ) { UserScreen(navController) }
         composable(
             "setting" ,
             enterTransition = { defaultEnterTransition() },

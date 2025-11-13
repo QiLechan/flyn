@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.foundation)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

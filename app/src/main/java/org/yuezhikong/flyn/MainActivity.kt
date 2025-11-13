@@ -4,6 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -35,6 +38,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -59,7 +64,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// @Preview
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Main() {
@@ -72,52 +77,61 @@ fun Main() {
     var showNavBar by remember { mutableStateOf(false) }
 
     LaunchedEffect(currentRoute) {
-        showTopBar = currentRoute in listOf("home")
+        showTopBar = currentRoute in listOf("home", "user")
         showNavBar = currentRoute in listOf("home", "user")
     }
 
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            ModalDrawerSheet(
-                modifier = Modifier.width(280.dp)
-            ) {
-                Text(
-                    text = "菜单",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-                NavigationDrawerItem(
-                    label = { Text("主页") },
-                    selected = false,
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                )
-                NavigationDrawerItem(
-                    label = { Text("设置") },
-                    selected = false,
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                )
-            }
-        }
-    ) {
+//    ModalNavigationDrawer(
+//        drawerState = drawerState,
+//        drawerContent = {
+//            ModalDrawerSheet(
+//                modifier = Modifier.width(280.dp)
+//            ) {
+//                Text(
+//                    text = "菜单",
+//                    style = MaterialTheme.typography.titleLarge,
+//                    modifier = Modifier.padding(16.dp)
+//                )
+//                NavigationDrawerItem(
+//                    label = { Text("主页") },
+//                    selected = false,
+//                    onClick = { /*TODO*/ },
+//                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+//                )
+//                NavigationDrawerItem(
+//                    label = { Text("设置") },
+//                    selected = false,
+//                    onClick = { /*TODO*/ },
+//                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+//                )
+//            }
+//        }
+//    ) {
         Scaffold(
             topBar = {
                 if (showTopBar) {
-                    TopAppBar(
-                        title = { Text("法粒援农示例") },
-                        navigationIcon = {
-                            IconButton(onClick = {
-                                scope.launch {
-                                    if (drawerState.isClosed) drawerState.open()
-                                    else drawerState.close()
-                                }
-                            }) {
-                                Icon(Icons.Default.Menu, contentDescription = "菜单")
-                            }
+                    when (currentRoute) {
+                        "home" -> {
+                            TopAppBar(
+                                title = { Text("主页", style = MaterialTheme.typography.titleLarge) },
+//                                navigationIcon = {
+//                                    IconButton(onClick = {
+//                                        scope.launch {
+//                                            if (drawerState.isClosed) drawerState.open()
+//                                            else drawerState.close()
+//                                        }
+//                                    }) {
+//                                        Icon(Icons.Default.Menu, contentDescription = "菜单")
+//                                    }
+//                                },
+                            )
                         }
-                    )
+                        "user" -> {
+                            TopAppBar(
+                                title = { Text("我的", style = MaterialTheme.typography.titleLarge) },
+                            )
+                        }
+                    }
                 }
             },
             bottomBar = {
@@ -174,9 +188,14 @@ fun Main() {
         ) { innerPadding ->
             SetupNavGraph(
                 navController = navController,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(
+                    start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
+                    end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
+                    bottom = innerPadding.calculateBottomPadding()
+                )
+                    .padding(top = 55.dp)
             )
         }
     }
-}
+//}
 
