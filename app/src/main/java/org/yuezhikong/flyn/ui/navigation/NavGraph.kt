@@ -15,6 +15,8 @@ import androidx.navigation.compose.composable
 import org.yuezhikong.flyn.ui.home.ConsultationScreen
 import org.yuezhikong.flyn.ui.home.HomeScreen
 import org.yuezhikong.flyn.ui.home.LegalScreen
+import org.yuezhikong.flyn.ui.home.SearchBar
+import org.yuezhikong.flyn.ui.home.SearchScreen
 import org.yuezhikong.flyn.ui.home.UserScreen
 import org.yuezhikong.flyn.ui.home.SettingScreen
 import org.yuezhikong.flyn.ui.user.LoginScreen
@@ -55,19 +57,19 @@ fun SetupNavGraph(navController: NavHostController, modifier: Modifier = Modifie
     ) {
         composable(
             "home",
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None },
-            popEnterTransition = { EnterTransition.None },
-            popExitTransition = { ExitTransition.None }
-            ) { HomeScreen() }
+            enterTransition = { defaultEnterTransition() },
+            exitTransition = { defaultExitTransition() },
+            popEnterTransition = { defaultPopEnterTransition() },
+            popExitTransition = { defaultPopExitTransition() }
+            ) { HomeScreen(navController) }
         composable("legal") { LegalScreen() }
         composable("consultation") { ConsultationScreen() }
         composable(
             "user" ,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None },
-            popEnterTransition = { EnterTransition.None },
-            popExitTransition = { ExitTransition.None }
+//            enterTransition = { EnterTransition.None },
+            exitTransition = { defaultExitTransition() },
+//            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { defaultPopExitTransition() }
         ) { UserScreen(navController) }
         composable(
             "setting" ,
@@ -82,7 +84,7 @@ fun SetupNavGraph(navController: NavHostController, modifier: Modifier = Modifie
             popEnterTransition = { defaultPopEnterTransition() },
             popExitTransition = { defaultPopExitTransition() },
         ) { LoginScreen(navController) }
-        composable("signin",
+        composable("signup",
             enterTransition = { defaultEnterTransition() },
             exitTransition = { defaultExitTransition() },
             popEnterTransition = { defaultPopEnterTransition() },
@@ -94,5 +96,12 @@ fun SetupNavGraph(navController: NavHostController, modifier: Modifier = Modifie
             popEnterTransition = { defaultPopEnterTransition() },
             popExitTransition = { defaultPopExitTransition() },
         ) { ProfileScreen() }
+        composable(
+            "search",
+            enterTransition = { defaultEnterTransition() },
+            exitTransition = { defaultExitTransition() },
+            popEnterTransition = { defaultPopEnterTransition() },
+            popExitTransition = { defaultPopExitTransition() },
+        ) { SearchScreen() }
     }
 }

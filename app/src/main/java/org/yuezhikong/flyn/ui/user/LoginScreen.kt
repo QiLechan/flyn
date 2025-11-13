@@ -1,6 +1,7 @@
 package org.yuezhikong.flyn.ui.user
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -111,6 +112,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .background(MaterialTheme.colorScheme.background),
     ) {
         Text("用户登录", style = MaterialTheme.typography.headlineMedium)
         OutlinedTextField(
@@ -136,7 +138,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
         }
         Button(
             onClick = {
-                navController.navigate("signin"){
+                navController.navigate("signup"){
                     launchSingleTop = true
                     restoreState = true
                 }

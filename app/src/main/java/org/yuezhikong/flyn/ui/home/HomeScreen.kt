@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
 import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -37,83 +38,35 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
-@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
-    var textFieldState = remember { TextFieldState() }
-    var searchResults by remember { mutableStateOf(listOf<String>()) }
-    Box(
-        modifier = Modifier
-            .padding(20.dp)
-            .height(250.dp)
-    ) {
-        SearchBar(
-            textFieldState = textFieldState,
-            onSearch = { query ->
-                // Simulate search results
-                searchResults = if (query.isNotEmpty()) {
-                    List(10) { "$query Result ${it + 1}" }
-                } else {
-                    emptyList()
-                }
-            },
-            searchResults = searchResults,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
+fun HomeScreen(navController: NavController) {
+    SearchBar(navController)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(
-    textFieldState: TextFieldState,
-    onSearch: (String) -> Unit,
-    searchResults: List<String>,
-    modifier: Modifier = Modifier
-) {
-    // Controls expansion state of the search bar
-    var expanded by rememberSaveable { mutableStateOf(false) }
-
+fun SearchBar(navController: NavController){
     Box(
-        modifier
-            .fillMaxSize()
-            .semantics { isTraversalGroup = true }
-    ) {
-        SearchBar(
+        modifier = Modifier
+            .padding(16.dp)
+            .height(35.dp)
+    ){
+        Card(
             modifier = Modifier
-                .align(Alignment.TopCenter)
-                .semantics { traversalIndex = 0f },
-            inputField = {
-                SearchBarDefaults.InputField(
-                    query = textFieldState.text.toString(),
-                    onQueryChange = { textFieldState.edit { replace(0, length, it) } },
-                    onSearch = {
-                        onSearch(textFieldState.text.toString())
-                        expanded = false
-                    },
-                    expanded = expanded,
-                    onExpandedChange = { expanded = it },
-                    placeholder = { Text("Search") }
-                )
-            },
-            expanded = expanded,
-            onExpandedChange = { expanded = it },
-        ) {
-            // Display search results in a scrollable column
-            Column(Modifier.verticalScroll(rememberScrollState())) {
-                searchResults.forEach { result ->
-                    ListItem(
-                        headlineContent = { Text(result) },
-                        modifier = Modifier
-                            .clickable {
-                                textFieldState.edit { replace(0, length, result) }
-                                expanded = false
-                            }
-                            .fillMaxWidth()
-                    )
+                .fillMaxSize(),
+            onClick = {
+                navController.navigate("search") {
+                    launchSingleTop = true
+                    restoreState = true
                 }
+            }
+        ) {
+            Column(
+                modifier = Modifier.padding(6.dp)
+            ) {
+                Icon(Icons.Default.Search, contentDescription = "搜索")
             }
         }
     }

@@ -108,32 +108,32 @@ fun Main() {
 //        }
 //    ) {
         Scaffold(
-            topBar = {
-                if (showTopBar) {
-                    when (currentRoute) {
-                        "home" -> {
-                            TopAppBar(
-                                title = { Text("主页", style = MaterialTheme.typography.titleLarge) },
-//                                navigationIcon = {
-//                                    IconButton(onClick = {
-//                                        scope.launch {
-//                                            if (drawerState.isClosed) drawerState.open()
-//                                            else drawerState.close()
-//                                        }
-//                                    }) {
-//                                        Icon(Icons.Default.Menu, contentDescription = "菜单")
-//                                    }
-//                                },
-                            )
-                        }
-                        "user" -> {
-                            TopAppBar(
-                                title = { Text("我的", style = MaterialTheme.typography.titleLarge) },
-                            )
-                        }
-                    }
-                }
-            },
+//            topBar = {
+//                if (showTopBar) {
+//                    when (currentRoute) {
+//                        "home" -> {
+//                            TopAppBar(
+//                                title = { Text("主页", style = MaterialTheme.typography.titleLarge) },
+////                                navigationIcon = {
+////                                    IconButton(onClick = {
+////                                        scope.launch {
+////                                            if (drawerState.isClosed) drawerState.open()
+////                                            else drawerState.close()
+////                                        }
+////                                    }) {
+////                                        Icon(Icons.Default.Menu, contentDescription = "菜单")
+////                                    }
+////                                },
+//                            )
+//                        }
+//                        "user" -> {
+//                            TopAppBar(
+//                                title = { Text("我的", style = MaterialTheme.typography.titleLarge) },
+//                            )
+//                        }
+//                    }
+//                }
+//            },
             bottomBar = {
                 if (showNavBar) {
                     NavigationBar {
@@ -188,12 +188,13 @@ fun Main() {
         ) { innerPadding ->
             SetupNavGraph(
                 navController = navController,
-                modifier = Modifier.padding(
-                    start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
-                    end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
-                    bottom = innerPadding.calculateBottomPadding()
-                )
-                    .padding(top = 55.dp)
+                modifier = Modifier.padding(innerPadding)
+//                modifier = Modifier.padding(
+//                    start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
+//                    end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
+//                    bottom = innerPadding.calculateBottomPadding()
+//                )
+//                    .padding(top = 55.dp)
             )
         }
     }
